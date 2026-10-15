@@ -1,0 +1,128 @@
+\documentclass[11pt]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{booktabs,longtable,array}
+\usepackage{amsmath}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.15}
+
+\title{\bfseries Supporting Information\\[4pt]
+\large Amplitude and midpoint statistics of the same chemotaxis cells\\
+demand incompatible receptor models}
+\author{Huan Li\\ \small Shanghai Liangta Biotech Co., Ltd., Shanghai 201899, P.\ R.\ China}
+\date{October 2026}
+
+\begin{document}
+\maketitle
+
+\noindent This Supporting Information documents the complete computational
+output of the accompanying repository
+(\texttt{chemotaxis-receptor-layer}, release v1.0.0): every analysis
+script, the numerical results each produced, and the provenance of the
+third-party FRET archive. Numbers are transcribed verbatim from
+\texttt{results/}; scripts are plain Python~3 (numpy/scipy/matplotlib)
+and read the \texttt{.mat} files in \texttt{data\_external/moore2024\_fret/}
+directly.
+
+\tableofcontents
+\newpage
+
+\section{Pipeline map: scripts and outputs}
+
+\begin{longtable}{p{4.8cm} p{6.8cm} p{4.2cm}}
+\toprule
+Script & Computes & Archived output \\
+\midrule
+\endhead
+\texttt{code49\_P7\_blind\_adjudication\_ FCD\_Weber} & P7 blind adjudication of the fold-change/Weber claim on the Moore 2024 archive & adjudication tables \\
+\texttt{code49b\_P7\_erratum\_ readjudication} & erratum re-adjudication (censoring-aware) & the code49b unit-table CSV (Chinese-named, \texttt{results/P7\_Moore2024\_FCD-Weber/}) \\
+\texttt{code51chemo\_receptor\_layer\_ selfcheck} & receptor-layer internal-consistency self-check & console log \\
+\texttt{code52\_protocol\_artifact\_test\_ raw\_FRET\_coordinate\_analysis} & protocol-artifact test in raw FRET coordinates & console/tables \\
+\texttt{code53\_CheA\_node\_mechanism\_ kernel\_competition} & CheA-node mechanism: kernel competition & console/tables \\
+\texttt{code54\_K12\_joint\_fit\_rupture\_ quantification} & joint-fit rupture quantification on the $K_{1/2}$ ladder & console/tables \\
+\texttt{code55\_multispecies\_local\_ adaptation\_joint\_test} & multi-species / local-adaptation joint test & console/tables \\
+\texttt{code56\_FRET\_readout\_nonlinearity\_ test} & FRET readout-nonlinearity control & console/tables \\
+\texttt{code57\_TCS\_depletion\_robustness\_ gain\_retuning} & TCS-depletion robustness with gain retuning & console/tables \\
+\texttt{code58\_P8\_independent\_arm\_ serine\_Lasp} & P8 independent arm (serine, L-aspartate) & console/tables \\
+\texttt{code59\_residual\_waterfall\_ window\_structure\_rhoF} & residual waterfall; window structure of $\rho_F$ & console/tables \\
+\texttt{code60\_heterogeneous\_population\_ censoring\_test} & heterogeneous-population censoring control & console/tables \\
+\texttt{code61\_rowwise\_Hill\_steepness\_ test} & row-wise Hill-steepness test & console/tables \\
+\texttt{code62\_single\_cell\_same\_source\_ statistics} & same-source single-cell statistics & console/tables \\
+\texttt{code70\_mixed\_ligand\_validation\_ arm\_P1P2} & prospective mixed-ligand validation arms P1/P2 & \texttt{chemotaxis\_prospective\_arm.csv} \\
+\texttt{chemotaxis\_adaptation\_audit.py} & adaptation-relay baseline audit on the full archive & \texttt{chemotaxis\_adaptation\_audit.json} \\
+\bottomrule
+\end{longtable}
+
+\section{P7 adjudication: $K_{1/2}$ medians vs the Weber line}
+
+Censoring-aware re-adjudication (code49b) of the FCD--Weber claim on the
+Moore et al.\ (2024) single-cell FRET archive. Table~\ref{tab:p7} is the
+archived unit table (verbatim rows).
+
+\begin{table}[h]
+\centering\small
+\caption{$K_{1/2}$ medians per background level vs Weber-line prediction.}
+\label{tab:p7}
+\begin{tabular}{cccccc}
+\toprule
+Background ($\mu$M) & $K_{1/2}$ median ($\mu$M) & IQR lo--hi & censored / $n$ & Weber pred.\ ($\mu$M) & dev.\ (dex) \\
+\midrule
+0.0  & 2.033 & 1.583--3.105 & 179/268 & 2.282 & $-0.050$ \\
+0.01 & 2.896 & 2.080--3.065 & 69/101  & 2.293 & $+0.101$ \\
+0.1  & 2.168 & 1.769--2.844 & 35/57   & 2.399 & $-0.044$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The per-cell unit table
+(the unit-table CSV under \texttt{results/P7\_Moore2024\_FCD-Weber/} (Chinese-named)) carries,
+per (background $B$, foreground $F$) condition: fold change $r$, threshold
+$T$, $\log_{10} r$, $\log_{10} T$, $n$ cells, and the two arm statistics
+$R_a$, $R_A$; e.g.\ $B{=}0.01$, $F{=}0.2\,\mu$M: $r=21.0$, $T=0.21$,
+$n=101$, $R_a=0.0655$, $R_A=0.0209$.
+
+\section{Adaptation-relay baseline audit}
+
+Full-archive audit (\texttt{chemotaxis\_adaptation\_audit.json}):
+2217 cells, 77{,}595 response events; median baseline activity after
+high- vs low-amplitude preceding stimuli $0.434$ vs $0.448$; median
+absolute response $0.608$. The per-(preceding-dose) baseline bands are
+archived in the same JSON.
+
+\section{Prospective mixed-ligand arms (code70)}
+
+Frozen-then-measured prospective arm V1 (clause P-1b, amplitude table of
+the L-aspartate component). Verbatim rows of
+\texttt{chemotaxis\_prospective\_arm.csv}:
+
+\begin{table}[h]
+\centering\small
+\caption{Prospective arm V1: measured vs predicted amplitudes
+(tolerance: max $|$dev$|$ $= 0.08$).}
+\label{tab:p70}
+\begin{tabular}{ccccc}
+\toprule
+Foreground ($\mu$M) & measured & predicted & deviation & hit \\
+\midrule
+5  & 0.047 & 0.119 & $-0.072$ & Y \\
+10 & 0.085 & 0.152 & $-0.067$ & Y \\
+20 & 0.139 & 0.187 & $-0.048$ & Y \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Third-party data provenance}
+
+\texttt{data\_external/moore2024\_fret/} mirrors, verbatim, the 48-file
+single-cell FRET archive of Moore, Kamino, Kottou, Shimizu \& Emonet,
+\textit{Cell Syst.} 15, 628--638 (2024), Dryad
+doi:10.5061/dryad.nvx0k6dzz, under its CC0~1.0 public-domain dedication;
+please cite the original study. Receptor-layer parameter priors derive
+from the Kamino/Shimizu chemoreceptor literature (incl.\
+\textit{Proc.\ Natl Acad.\ Sci.\ USA} 108, 13870 (2011)); fold-change
+readout evidence from Lazova et al., \textit{Proc.\ Natl Acad.\ Sci.\
+USA} 108, 13870--13875 (2011). Full notes in
+\texttt{data\_external/PROVENANCE.md}.
+
+\end{document}
