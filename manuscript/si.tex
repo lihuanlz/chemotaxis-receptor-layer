@@ -18,7 +18,7 @@ demand incompatible receptor models}
 
 \noindent This Supporting Information documents the complete computational
 output of the accompanying repository
-(\texttt{chemotaxis-receptor-layer}, release v1.0.0): every analysis
+(\texttt{chemotaxis-receptor-layer}, release v1.0.1): every analysis
 script, the numerical results each produced, and the provenance of the
 third-party FRET archive. Numbers are transcribed verbatim from
 \texttt{results/}; scripts are plain Python~3 (numpy/scipy/matplotlib)
@@ -35,22 +35,22 @@ directly.
 Script & Computes & Archived output \\
 \midrule
 \endhead
-\texttt{code49\_P7\_blind\_adjudication\_ FCD\_Weber} & P7 blind adjudication of the fold-change/Weber claim on the Moore 2024 archive & adjudication tables \\
-\texttt{code49b\_P7\_erratum\_ readjudication} & erratum re-adjudication (censoring-aware) & the code49b unit-table CSV (Chinese-named, \texttt{results/P7\_Moore2024\_FCD-Weber/}) \\
-\texttt{code51chemo\_receptor\_layer\_ selfcheck} & receptor-layer internal-consistency self-check & console log \\
-\texttt{code52\_protocol\_artifact\_test\_ raw\_FRET\_coordinate\_analysis} & protocol-artifact test in raw FRET coordinates & console/tables \\
-\texttt{code53\_CheA\_node\_mechanism\_ kernel\_competition} & CheA-node mechanism: kernel competition & console/tables \\
-\texttt{code54\_K12\_joint\_fit\_rupture\_ quantification} & joint-fit rupture quantification on the $K_{1/2}$ ladder & console/tables \\
-\texttt{code55\_multispecies\_local\_ adaptation\_joint\_test} & multi-species / local-adaptation joint test & console/tables \\
-\texttt{code56\_FRET\_readout\_nonlinearity\_ test} & FRET readout-nonlinearity control & console/tables \\
-\texttt{code57\_TCS\_depletion\_robustness\_ gain\_retuning} & TCS-depletion robustness with gain retuning & console/tables \\
-\texttt{code58\_P8\_independent\_arm\_ serine\_Lasp} & P8 independent arm (serine, L-aspartate) & console/tables \\
-\texttt{code59\_residual\_waterfall\_ window\_structure\_rhoF} & residual waterfall; window structure of $\rho_F$ & console/tables \\
-\texttt{code60\_heterogeneous\_population\_ censoring\_test} & heterogeneous-population censoring control & console/tables \\
-\texttt{code61\_rowwise\_Hill\_steepness\_ test} & row-wise Hill-steepness test & console/tables \\
-\texttt{code62\_single\_cell\_same\_source\_ statistics} & same-source single-cell statistics & console/tables \\
-\texttt{code70\_mixed\_ligand\_validation\_ arm\_P1P2} & prospective mixed-ligand validation arms P1/P2 & \texttt{chemotaxis\_prospective\_arm.csv} \\
-\texttt{chemotaxis\_adaptation\_audit.py} & adaptation-relay baseline audit on the full archive & \texttt{chemotaxis\_adaptation\_audit.json} \\
+\texttt{code49\_\allowbreak{}P7\_\allowbreak{}blind\_\allowbreak{}adjudication\_\allowbreak{} FCD\_\allowbreak{}Weber} & P7 blind adjudication of the fold-change/Weber claim on the Moore 2024 archive & adjudication tables \\
+\texttt{code49b\_\allowbreak{}P7\_\allowbreak{}erratum\_\allowbreak{} readjudication} & erratum re-adjudication (censoring-aware) & the code49b unit-table CSV (\texttt{results/P7\_\allowbreak{}Moore2024\_\allowbreak{}FCD-Weber/code49b\_\allowbreak{}unit\_\allowbreak{}table.csv}) \\
+\texttt{code51chemo\_\allowbreak{}receptor\_\allowbreak{}layer\_\allowbreak{} selfcheck} & receptor-layer internal-consistency self-check & console log \\
+\texttt{code52\_\allowbreak{}protocol\_\allowbreak{}artifact\_\allowbreak{}test\_\allowbreak{} raw\_\allowbreak{}FRET\_\allowbreak{}coordinate\_\allowbreak{}analysis} & protocol-artifact test in raw FRET coordinates & console/tables \\
+\texttt{code53\_\allowbreak{}CheA\_\allowbreak{}node\_\allowbreak{}mechanism\_\allowbreak{} kernel\_\allowbreak{}competition} & CheA-node mechanism: kernel competition & console/tables \\
+\texttt{code54\_\allowbreak{}K12\_\allowbreak{}joint\_\allowbreak{}fit\_\allowbreak{}rupture\_\allowbreak{} quantification} & joint-fit rupture quantification on the $K_{1/2}$ ladder & console/tables \\
+\texttt{code55\_\allowbreak{}multispecies\_\allowbreak{}local\_\allowbreak{} adaptation\_\allowbreak{}joint\_\allowbreak{}test} & multi-species / local-adaptation joint test & console/tables \\
+\texttt{code56\_\allowbreak{}FRET\_\allowbreak{}readout\_\allowbreak{}nonlinearity\_\allowbreak{} test} & FRET readout-nonlinearity control & console/tables \\
+\texttt{code57\_\allowbreak{}TCS\_\allowbreak{}depletion\_\allowbreak{}robustness\_\allowbreak{} gain\_\allowbreak{}retuning} & TCS-depletion robustness with gain retuning & console/tables \\
+\texttt{code58\_\allowbreak{}P8\_\allowbreak{}independent\_\allowbreak{}arm\_\allowbreak{} serine\_\allowbreak{}Lasp} & P8 independent arm (serine, L-aspartate) & console/tables \\
+\texttt{code59\_\allowbreak{}residual\_\allowbreak{}waterfall\_\allowbreak{} window\_\allowbreak{}structure\_\allowbreak{}rhoF} & residual waterfall; window structure of $\rho_F$ & console/tables \\
+\texttt{code60\_\allowbreak{}heterogeneous\_\allowbreak{}population\_\allowbreak{} censoring\_\allowbreak{}test} & heterogeneous-population censoring control & console/tables \\
+\texttt{code61\_\allowbreak{}rowwise\_\allowbreak{}Hill\_\allowbreak{}steepness\_\allowbreak{} test} & row-wise Hill-steepness test & console/tables \\
+\texttt{code62\_\allowbreak{}single\_\allowbreak{}cell\_\allowbreak{}same\_\allowbreak{}source\_\allowbreak{} statistics} & same-source single-cell statistics & console/tables \\
+\texttt{code70\_\allowbreak{}mixed\_\allowbreak{}ligand\_\allowbreak{}validation\_\allowbreak{} arm\_\allowbreak{}P1P2} & prospective mixed-ligand validation arms P1/P2 & \texttt{chemotaxis\_\allowbreak{}prospective\_\allowbreak{}arm.csv} \\
+\texttt{chemotaxis\_\allowbreak{}adaptation\_\allowbreak{}audit.py} & adaptation-relay baseline audit on the full archive & \texttt{chemotaxis\_\allowbreak{}adaptation\_\allowbreak{}audit.json} \\
 \bottomrule
 \end{longtable}
 
@@ -76,7 +76,7 @@ Background ($\mu$M) & $K_{1/2}$ median ($\mu$M) & IQR lo--hi & censored / $n$ & 
 \end{table}
 
 The per-cell unit table
-(the unit-table CSV under \texttt{results/P7\_Moore2024\_FCD-Weber/} (Chinese-named)) carries,
+(\texttt{results/P7\_Moore2024\_FCD-Weber/code49b\_unit\_table.csv}) carries,
 per (background $B$, foreground $F$) condition: fold change $r$, threshold
 $T$, $\log_{10} r$, $\log_{10} T$, $n$ cells, and the two arm statistics
 $R_a$, $R_A$; e.g.\ $B{=}0.01$, $F{=}0.2\,\mu$M: $r=21.0$, $T=0.21$,

@@ -3,7 +3,7 @@
 """
 Code 70: mixed-ligand validation arm P-1/P-2 adjudication v1.0.0
 ================================================
-Pre-registration file: 04_细胞线4/结果/预注册_混合配体验证臂_P1P2.md
+Pre-registration file: 04_cell_line_4/results/prereg_mixed_ligand_validation_arm_P1P2.md
 (sealed on 2026-08-16 before data unblinding; this code strictly follows its pipeline and criteria)
 
 Validation arm (Moore 2024 Dryad, downloaded this round after passing Anubis verification via browser):
@@ -19,7 +19,7 @@ Predictions (fixed in the pre-registration):
         V2=122 µM equivalents = foreground 0.86 µM Lasp (±0.15 dex, estimable requires n≥20)
 Pipeline identical to code 58 (a field, da = median of 4 pre-stimulus points − median of last 6 stimulus points;
 per-cell K1/2: linear interpolation across 0.5 on the log10 axis, censored if D.max()<0.5).
-Run: python3 代码70_混合配体验证臂_P1P2判决.py
+Run: python3 code70_mixed_ligand_validation_arm_P1P2.py
 ================================================
 """
 import os, warnings
@@ -28,7 +28,7 @@ import numpy as np
 import scipy.io as sio
 
 warnings.filterwarnings("ignore")
-ROOT = "/mnt/agents/output/03_细胞线3/公开数据/Moore2024_Chemotaxis_FRET"
+ROOT = "/mnt/agents/output/03_cell_line_3/public_data/Moore2024_Chemotaxis_FRET"
 
 ARMS = {
     # s_sub: the amount to subtract from the s-field level to obtain the foreground F.
@@ -160,4 +160,4 @@ for arm, cfg in ARMS.items():
               f"{'yes' if len(v)/ntot<0.5 else 'no'})")
 
 print("\n== 4. Incidental observation (fracture side, not adjudicated): does the amplitude coordinate structure persist under mixed backgrounds ==")
-print("(see the R² difference in section 2; a formal fracture test is left to the joint fit — this code sets no adjudication)")
+print("(see the R² difference in section 2; a formal fracture test is left to the joint fit  -  this code sets no adjudication)")

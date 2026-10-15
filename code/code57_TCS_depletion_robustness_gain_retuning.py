@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Code 57 TCS depletion robustness check + gain retuning (candidate ①) joint test v1.0.0
+Code 57 TCS depletion robustness check + gain retuning (candidate (1)) joint test v1.0.0
 ================================================
 Two parts:
 §1 TCS depletion-correction robustness check. All previous receptor-layer models used the zero-depletion approximation
@@ -13,20 +13,20 @@ Two parts:
    Actual run: at λ=1, (R², err) = (0.948, 0.257), identical to the zero-depletion control,
    parameters match digit for digit → depletion formally excluded as a fracture source (consistent with the κ≫1 estimate).
 
-§2 candidate ① gain retuning (effective parameters vary with background/methylation state), three minimal parameterizations:
-   G-Ki：Ki_eff(B)=Ki0·(1+B/Bg)^h1
-   G-N： N_eff(B)=N0·(1+B/Bg)^h2
+§2 candidate (1) gain retuning (effective parameters vary with background/methylation state), three minimal parameterizations:
+   G-Ki: Ki_eff(B)=Ki0·(1+B/Bg)^h1
+   G-N:  N_eff(B)=N0·(1+B/Bg)^h2
    G-both: both together.
    Discrimination unchanged: R²>0.9 and K1/2 error <0.1 dex.
 
 Actual-run results (v1.0.0, block-verified: §1 re-run independently with this file's functions, digit-identical;
 §2 variants re-run by the kernel over multiple rounds of 8–16 starts; G-Ki identical across two rounds; G-N/G-both
-take the best of all runs — multi-start optimization is sensitive to start count; too few starts fall into an
+take the best of all runs  -  multi-start optimization is sensitive to start count; too few starts fall into an
 amplitude-only local optimum (R²=0.980/err=1.00), masking the compromise basin; dual-recorded):
-  G-Ki：λ=1 → 0.949/0.254；λ=30 → 0.663/0.064
+  G-Ki: λ=1 → 0.949/0.254; λ=30 → 0.663/0.064
         (at low λ, h→−2.3 lower bound, Bg→large: degenerates to constant Ki; λ=3 per-B shows
          low plateau ~3.7 vs measured 2.0–2.9, B=10/100 each short by 0.22–0.26 dex)
-  G-N ：λ=1 → 0.948/0.247；λ=30 → 0.678/0.052
+  G-N : λ=1 → 0.948/0.247; λ=30 → 0.678/0.052
         (N0→60, h→2.3 both hit bounds: the fit wants gain rising without limit with background,
          physically unreasonable; Ka→9–30 µM far from literature anchors)
   G-both: coincides with G-N (h1→0, Ki falls back to constant) → wasted degrees of freedom.
@@ -48,8 +48,8 @@ Verdict:
    the standard mechanism family cannot reconcile exists inside the Moore data" as this branch's final verdict, dual-recorded.
 
 Data: Moore 2024 Dryad doi:10.5061/dryad.nvx0k6dzz (CC0)
-run: python3 代码57_TCS耗竭稳健性与增益重调检验.py
-dependencies: numpy, scipy, pandas; 代码54 in same directory (data extraction reused)
+run: python3 code57_TCS_depletion_robustness_gain_retuning.py
+dependencies: numpy, scipy, pandas; code54 in same directory (data extraction reused)
 """
 
 import importlib.util

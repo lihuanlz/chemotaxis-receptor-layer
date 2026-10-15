@@ -3,7 +3,7 @@
 """
 Code 55 joint test of multispecies / local-adaptation models + protocol-difference control v1.0.0
 ================================================
-Following code54's break quantification, per audit round-6 paths ② and ③, test whether two classes of minimal extended models
+Following code54's break quantification, per audit round-6 paths (2) and (3), test whether two classes of minimal extended models
 can simultaneously fit Moore's amplitude table (R²>0.9) and the K1/2 distribution (error <0.1 dex).
 
 Models:
@@ -21,7 +21,7 @@ backgrounds where the model prediction never reaches half-amplitude are recorded
   (i) Moore-style steps + pre-adaptation readout; (ii) Lazova-style waveform + post-adaptation steady-state readout.
 
 Actual run results (v1.0.0, final values from an independent run; during development a β/amax unpacking-order misalignment occurred,
-fixed and double-recorded — lesson: independent reruns are mandatory):
+fixed and double-recorded  -  lesson: independent reruns are mandatory):
   M2a: best R²=0.719/err=0.298 (α→0.08 extreme, amax hits boundary) → FAIL
   M2b: best R²=0.796/err=0.239 (α→0.05, Ka_A and N_A hit boundaries) → FAIL
        the mixture fits amplitude worse than the single species (0.796<0.980):
@@ -40,7 +40,7 @@ fixed and double-recorded — lesson: independent reruns are mandatory):
        internal to the Moore data, not caused by protocol.
 
 Data: Moore 2024 Dryad doi:10.5061/dryad.nvx0k6dzz (CC0)
-Run: python3 代码55_多物种与局部适应_联合检验.py
+Run: python3 code55_multispecies_local_adaptation_joint_test.py
 Dependencies: numpy, scipy, pandas; code54 in the same directory (data extraction reused)
 """
 
@@ -214,7 +214,7 @@ def main():
     print("""
 == Summary ==
 M2a/M2b two-subpopulation linear superposition: FAIL (amplitude R²≤0.842, parameters hit boundaries, worse than single species).
-  The non-adapting subpopulation's zero-ligand-anchored increment shape conflicts with the amplitude-table shape — the audit's
+  The non-adapting subpopulation's zero-ligand-anchored increment shape conflicts with the amplitude-table shape  -  the audit's
   predicted "high-background residuals explained by a non-adapting subpopulation" did not hold.
 M2c imperfect adaptation: closest compromise R²=0.953/err=0.182 dex (Ka→∞ single threshold,
   β=0.995 near-precise adaptation), B=100 hit, but it does not enter the acceptance region; the break narrows without closing.

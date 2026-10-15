@@ -20,7 +20,7 @@ be its source (normalization is only a monotone rescaling); the protocol-artifac
 (normalization level) is excluded; the contradiction is pushed to biological mechanism (receptor->CheY-P narrow band) or regime.
 
 Data: Moore et al. 2024 Dryad doi:10.5061/dryad.nvx0k6dzz (CC0)
-Run: python3 代码52_协议伪影检验_原始FRET坐标分析.py
+Run: python3 code52_protocol_artifact_test_raw_FRET_coordinate_analysis.py
 """
 
 import os
@@ -31,7 +31,7 @@ import numpy as np
 import scipy.io as sio
 from scipy.stats import linregress, wilcoxon
 
-ROOT = "/mnt/agents/output/03_细胞线3/公开数据/Moore2024_Chemotaxis_FRET"
+ROOT = "/mnt/agents/output/03_cell_line_3/public_data/Moore2024_Chemotaxis_FRET"
 
 # File table and B values identical to Code 49b (metadata; 230831_FOV2 is the exception with B=100)
 FILES = {

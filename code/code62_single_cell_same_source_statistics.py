@@ -3,7 +3,7 @@
 """
 Code 62 single-cell same-source statistic adjudication: is the fracture a population-sampling artifact? v1.0.0
 ================================================
-Task: adjudicate the "statistical structure" explanation raised in §21 — the K1/2 median samples the tail of the sensitive
+Task: adjudicate the "statistical structure" explanation raised in §21  -  the K1/2 median samples the tail of the sensitive
 subpopulation while the amplitude table samples the whole-population median; the two statistics sample different populations, hence demand different N.
 
 Design (exploiting the fact that the Moore 2024 data are themselves single-cell FRET):
@@ -44,7 +44,7 @@ from scipy.optimize import brentq, least_squares
 
 warnings.filterwarnings("ignore")
 
-ROOT = "/mnt/agents/output/03_细胞线3/公开数据/Moore2024_Chemotaxis_FRET"
+ROOT = "/mnt/agents/output/03_cell_line_3/public_data/Moore2024_Chemotaxis_FRET"
 FILES = {
     "210802_FOV1": 0, "210802_FOV2": 0, "210805_FOV1": 0, "210805_FOV2": 0,
     "220106_FOV1": 0, "230417_FOV1": 0,

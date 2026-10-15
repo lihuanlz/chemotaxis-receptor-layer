@@ -24,7 +24,7 @@ Arm 3 (§4): kernel-model competition. Moore's own Discussion proposes a "linear
   also: within-row (B=0.01 and B=100) logF vs linear-F separability test.
 
 Data: Moore 2024 Dryad doi:10.5061/dryad.nvx0k6dzz (CC0)
-Run: python3 代码53_CheA节点机制检验与核模型竞赛.py
+Run: python3 code53_CheA_node_mechanism_kernel_competition.py
 Dependencies: numpy, scipy, pandas
 """
 
@@ -43,8 +43,8 @@ from scipy.stats import linregress
 warnings.filterwarnings("ignore")
 rng = np.random.default_rng(20260815)
 
-CSV = "/mnt/agents/output/03_细胞线3/结果/P7_Moore2024_FCD-Weber/代码49b_单元表.csv"
-ROOT = "/mnt/agents/output/03_细胞线3/公开数据/Moore2024_Chemotaxis_FRET"
+CSV = "/mnt/agents/output/03_cell_line_3/results/P7_Moore2024_FCD-Weber/code49b_unit_table.csv"
+ROOT = "/mnt/agents/output/03_cell_line_3/public_data/Moore2024_Chemotaxis_FRET"
 
 
 def r2(x, y):
@@ -228,7 +228,7 @@ New empirical kernel (updated): R = A·ln(1+F/Kc)/(1+(B/Bs)^p), Kc≈0.46–0.57
    Within-row test: B=0.01 and B=100 rows are both logF-dominated (0.97/0.99).
 Interpretation: the amplitude response is [the logarithm of the absolute increment F],
    with the reference zero anchored at Kc (a class-II structural constant); background enters only
-   through the decay term — equivalent to the free-energy reference state fixed at zero ligand, adaptation
+   through the decay term  -  equivalent to the free-energy reference state fixed at zero ligand, adaptation
    adjusting only the gain. Not reproduced by any standard precise-adaptation mechanism (the h(g(B+F)−g(B))
    family, Moore's own shifted Hill, CheA-segment dynamics). An empirical regularity no prior model explains.
 """)

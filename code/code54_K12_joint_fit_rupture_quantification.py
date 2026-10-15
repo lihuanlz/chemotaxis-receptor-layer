@@ -4,7 +4,7 @@
 code54 K1/2 joint fit: quantifying the self-consistency rupture of the standard MWC model v1.0.0
 ================================================
 Task: quantitatively answer "can the standard MWC + exact-adaptation model, with a single set of physical
-parameters, self-consistently reproduce both Moore-paper statistics — the amplitude table R(B,F) and the K1/2(B) distribution".
+parameters, self-consistently reproduce both Moore-paper statistics  -  the amplitude table R(B,F) and the K1/2(B) distribution".
 
 §1 per-cell K1/2 extraction from the raw .mat files: under field a (saturating-stimulus calibrated, 0/1 normalized),
    responses da are sorted by total ligand T=B+F and linearly interpolated on the log-T axis at da=0.5.
@@ -41,8 +41,8 @@ from scipy.optimize import brentq, least_squares
 
 warnings.filterwarnings("ignore")
 
-ROOT = "/mnt/agents/output/03_细胞线3/公开数据/Moore2024_Chemotaxis_FRET"
-CSV = "/mnt/agents/output/03_细胞线3/结果/P7_Moore2024_FCD-Weber/代码49b_单元表.csv"
+ROOT = "/mnt/agents/output/03_cell_line_3/public_data/Moore2024_Chemotaxis_FRET"
+CSV = "/mnt/agents/output/03_cell_line_3/results/P7_Moore2024_FCD-Weber/code49b_unit_table.csv"
 
 FILES = {
     "210802_FOV1": 0, "210802_FOV2": 0, "210805_FOV1": 0, "210805_FOV2": 0,

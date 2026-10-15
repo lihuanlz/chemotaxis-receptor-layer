@@ -6,7 +6,7 @@
 # does the pre-pulse baseline depend on the PREVIOUS pulse's dose?
 import scipy.io as sio, numpy as np, glob, json
 
-files = sorted(glob.glob(r'03_细胞线3/公开数据/Moore2024_Chemotaxis_FRET/*.mat'))
+files = sorted(glob.glob(r'03_cell_line_3/public_data/Moore2024_Chemotaxis_FRET/*.mat'))
 events = []
 ncells = 0
 for f in files:
@@ -65,5 +65,5 @@ json.dump(dict(ncells=ncells, events=len(events),
                baseline_by_prev={str(d): [float(np.median(by_prev[d])), len(by_prev[d])] for d in by_prev},
                baseline_after_hi=float(np.median(hi)), baseline_after_lo=float(np.median(lo)),
                median_abs_resp=float(np.median(resp_all))),
-          open(r'05_主线纲领与设计/级联线/chemotaxis_adaptation_audit.json', 'w'), indent=1)
+          open(r'05_main_program/cascade_line/chemotaxis_adaptation_audit.json', 'w'), indent=1)
 print('saved json')

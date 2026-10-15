@@ -4,14 +4,14 @@
 Code 59 residual waterfall + within-stimulus-window temporal structure + ρ(F) recheck v1.0.0
 ================================================
 Executable corrected version of the three "zero-cost sprint" routes (protocol facts: 10 s stimulus window,
-30 s gaps not imaged, no B=3/30 levels, measurement before adaptation — no "60 s residual" to speak of).
+30 s gaps not imaged, no B=3/30 levels, measurement before adaptation  -  no "60 s residual" to speak of).
 
 §1 amplitude residual waterfall (unit table + per-cell, two conventions, M2c λ=1 and standard amplitude-optimal models)
   Results: residuals small and centered at every level under both conventions (per-cell median −0.03…+0.01),
   no B=10 cliff, no mechanism-switch threshold. Only systematic structure: at the highest-F end of each row the model
   slightly overestimates (+0.04…+0.065; B=0 row F>2 bin per-cell median −0.097),
   i.e. data saturate earlier than the model. Per-cell spread (IQR≈0.15–0.2) far exceeds model error,
-  and the |>0.15| fraction is actually lowest at B=10 (16.5%) — spread comes from cell heterogeneity,
+  and the |>0.15| fraction is actually lowest at B=10 (16.5%)  -  spread comes from cell heterogeneity,
   not model failure.
   ⚠️ dual-record: during development this code once fed total concentration sv to the model as foreground F (same-ligand
   files' s field includes background), causing spurious large residuals at B≥10; direct single-file single-level check
@@ -34,16 +34,16 @@ Executable corrected version of the three "zero-cost sprint" routes (protocol fa
 §4 ρ(F) recheck (premise test for route two)
   G10-scale pointwise inversion: ρ(F)=59(F=10)→16(F=80), seemingly decreasing with F.
   But direct fit with pure-competition MWC (effective ligand=F+ρ·L, L=10 µM L-Asp):
-  constant ρ suffices — ρ≈24 (M2c anchor)/22 (amplitude-optimal anchor)/9 (Emonet anchor),
+  constant ρ suffices  -  ρ≈24 (M2c anchor)/22 (amplitude-optimal anchor)/9 (Emonet anchor),
   residuals [−0.045,+0.006,+0.014,0,−0.002], only the F=5 point off by −0.045.
   → the "2× overestimate" is a scale artifact of G10 phenomenological-kernel inversion, not allosteric evidence;
     constant-ρ pure competition already fits; no ρ(F) correction term needed.
     (Conclusive implication: per-µM potency of L-Asp on Tar ≈ 22–24× meAsp,
-     Ki_LAsp≈Ki_MeAsp/23 — literature-checkable.)
+     Ki_LAsp≈Ki_MeAsp/23  -  literature-checkable.)
 
 Data: Moore 2024 Dryad doi:10.5061/dryad.nvx0k6dzz (CC0)
-run: python3 代码59_残差瀑布_窗内时间结构_与rhoF复核.py
-dependencies: numpy, scipy, pandas; 代码54 in same directory (FILES/extraction logic reused)
+run: python3 code59_residual_waterfall_window_structure_rhoF.py
+dependencies: numpy, scipy, pandas; code54 in same directory (FILES/extraction logic reused)
 """
 
 import importlib.util
@@ -179,7 +179,7 @@ def main():
               f"IQR=[{np.percentile(v, 25):+.4f},{np.percentile(v, 75):+.4f}]")
 
     print("\n== §4 ρ(F) recheck: pure-competition MWC (L-Asp arm, five points F=5–80) ==")
-    ROOTD = "/mnt/agents/output/03_细胞线3/公开数据/Moore2024_Chemotaxis_FRET"
+    ROOTD = "/mnt/agents/output/03_cell_line_3/public_data/Moore2024_Chemotaxis_FRET"
     lev_all = defaultdict(list)
     for name in ["210721_FOV1", "210721_FOV2", "210818_FOV1", "210818_FOV2",
                  "210907_FOV1", "210908_FOV1", "210908_FOV2"]:

@@ -7,7 +7,7 @@ P8 goal: use independent ligand arms **not involved in fitting** to test zero-fi
 Data source: 17 previously undownloaded .mat files from the Moore 2024 Dryad dataset
 (this round, each file was content-verified and placed after Dryad page validation; file identity confirmed via s/s_min_max
 fields and consistency with BackgroundLIst.txt conditions. Note: the s field of cross-ligand files
-records only the foreground ligand concentration — confirmed with 210721 (10 µM L-Asp background + meAsp foreground,
+records only the foreground ligand concentration  -  confirmed with 210721 (10 µM L-Asp background + meAsp foreground,
 s=2–80 µM meAsp foreground)).
 
 Three arms (all extracted with the same 49b pipeline: da = pre-stimulus median − end-of-stimulus median):
@@ -18,7 +18,7 @@ Three arms (all extracted with the same 49b pipeline: da = pre-stimulus median �
    Test: precise adaptation predicts F*(B)=c·(Ki+B), c=0.279 taken from the meAsp M2c(λ=1)
    fit (zero-fit), Ki_ser=0.182 µM self-calibrated from the B=0 arm (only parameter).
    Predicted T(B=1)=1.330 vs observed 1.172 → Δ=+0.055 dex <0.1 v
-   Pure-increment (no-shift) prediction T=1.051, Δ=−0.047 dex also within tolerance —
+   Pure-increment (no-shift) prediction T=1.051, Δ=−0.047 dex also within tolerance  - 
    B=1 cannot distinguish the two on the total axis; on the foreground axis fold predicts F*=0.330,
    increment predicts F*=0.051, observed F*=0.172: fold is closer (0.28 vs 0.53 dex),
    direction supports an adaptation-type shift, but is not a decisive discriminator.
@@ -35,19 +35,19 @@ Three arms (all extracted with the same 49b pipeline: da = pre-stimulus median �
    meAsp spontaneous-background B=10 row (G10 predicts 0.54). Inverting the effective background with the G10 empirical kernel:
    B_eff≈235 µM meAsp equivalent → ρ≈23 (each µM L-Asp ≈ 23× meAsp potency,
    i.e. Ki_LAsp ≈ Ki_MeAsp/23). The high-F end fits well; the low-F end (F≤10)
-   is systematically overestimated by ~2× — matching the "low-ligand region fits worse" gap shape of the main dataset.
+   is systematically overestimated by ~2×  -  matching the "low-ligand region fits worse" gap shape of the main dataset.
 
 Verdict:
 1. Both P8 arms (ser B=1 shift, competition-arm zero shift) are consistent with the precise-adaptation structure;
    the serine arm probes only the L≤1.4 µM low-concentration region and does not touch the
-   meAsp B≥10/F≤40 region where the main-dataset break lives — P8 cannot veto the mechanism family, but it **does not cover the break region** either.
+   meAsp B≥10/F≤40 region where the main-dataset break lives  -  P8 cannot veto the mechanism family, but it **does not cover the break region** either.
 2. The competition-arm exact hit (0.051=0.051) is the cleanest zero-fit prediction success of this round.
 3. The L-Asp arm's ρ≈23 is an independent, literature-checkable numerical prediction.
 4. The main-dataset amplitude–K1/2 joint break verdict stands; the incremental information from P8 is:
    the break is not a global readout artifact (competition arm), and the adaptation-type shift replicates on an independent ligand (ser arm).
 
 Data: Moore 2024 Dryad doi:10.5061/dryad.nvx0k6dzz (CC0)
-Run: python3 代码58_P8独立臂检验_丝氨酸与Lasp.py
+Run: python3 code58_P8_independent_arm_serine_Lasp.py
 Dependencies: numpy, scipy, pandas
 """
 
@@ -61,11 +61,11 @@ import scipy.io as sio
 
 warnings.filterwarnings("ignore")
 
-ROOT = "/mnt/agents/output/03_细胞线3/公开数据/Moore2024_Chemotaxis_FRET"
-CSV49 = "/mnt/agents/output/03_细胞线3/结果/P7_Moore2024_FCD-Weber/代码49b_单元表.csv"
+ROOT = "/mnt/agents/output/03_cell_line_3/public_data/Moore2024_Chemotaxis_FRET"
+CSV49 = "/mnt/agents/output/03_cell_line_3/results/P7_Moore2024_FCD-Weber/code49b_unit_table.csv"
 
 ARMS = {
-    "竞争臂_100meAsp_bg__ser_fg": ["210920_FOV1", "210920_FOV2", "210921_FOV1", "210921_FOV2"],
+    "competition_arm_100meAsp_bg__ser_fg": ["210920_FOV1", "210920_FOV2", "210921_FOV1", "210921_FOV2"],
     "ser_B0": ["210910_FOV1", "210913_FOV1"],
     "ser_B1": ["210914_FOV1", "210914_FOV2", "210916_FOV1", "210916_FOV2"],
     "Lasp10_bg__meAsp_fg": ["210721_FOV1", "210721_FOV2", "210818_FOV1", "210818_FOV2",
@@ -157,7 +157,7 @@ def main():
     inc_T = 1 + K12_ser0
     print(f"  pure-increment control: predicted T={inc_T:.3f} → Δ={np.log10(inc_T/obs_T):+.3f} dex (both within tolerance on the total axis)")
     print(f"  foreground-axis discrimination: fold F*={c_coef*(Ki_ser+1):.3f}, increment F*={K12_ser0:.3f}, observed F*={obs_T-1:.3f}")
-    comp = float(np.median(k12s["竞争臂_100meAsp_bg__ser_fg"]))
+    comp = float(np.median(k12s["competition_arm_100meAsp_bg__ser_fg"]))
     print(f"competition arm: predicted K1/2=F*(0)={K12_ser0:.3f} vs observed {comp:.3f} → "
           f"Δ={np.log10(comp/K12_ser0):+.3f} dex (zero-shift prediction hits exactly)")
 
@@ -180,7 +180,7 @@ def main():
 Competition-arm zero shift hits exactly (0.051=0.051 µM): adaptation bookkeeping is receptor-specific, no global readout coordinate.
 ser B=1 shift direction matches precise adaptation (total-axis Δ=0.069 dex), but B=1 has limited discriminative power.
 L-Asp arm: 10 µM L-Asp ≡ 235 µM meAsp equivalent background (ρ≈23, literature-checkable);
-low-F end G10 systematically overestimates by 2× — consistent with the main-dataset gap shape.
+low-F end G10 systematically overestimates by 2×  -  consistent with the main-dataset gap shape.
 The main-dataset break verdict stands; P8 rules out global readout artifacts and replicates the adaptation-type shift on an independent ligand.
 """)
 
