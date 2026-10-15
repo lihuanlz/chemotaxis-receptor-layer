@@ -10,7 +10,7 @@
 
 | Source | Used for | Access |
 |---|---|---|
-| Kamino et al. / Shimizu et al. chemoreceptor literature (incl. *Proc. Natl Acad. Sci. USA* 108, 13870–13875 (2011) and related) | receptor-layer parameter priors | Publisher sites |
+| Sourjik & Berg, *Proc. Natl Acad. Sci. USA* 99, 123–127 (2002); Shimizu, Tu & Berg, *Mol. Syst. Biol.* 6, 382 (2010); Tu, Shimizu & Berg, *Proc. Natl Acad. Sci. USA* 105, 14855–14860 (2008) | receptor-layer parameter priors | Publisher sites |
 | Lazova et al., *Proc. Natl Acad. Sci. USA* 108, 13870–13875 (2011) | fold-change readout evidence | Publisher site |
 
 All verdicts in `results/` are our own derived work product.
