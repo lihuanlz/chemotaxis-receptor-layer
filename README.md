@@ -1,5 +1,7 @@
 # Amplitude and midpoint statistics of the same chemotaxis cells demand incompatible receptor models
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23402856.svg)](https://doi.org/10.5281/zenodo.23402856)
+
 Companion code, results and manuscript source for the paper:
 
 > H. Li. *Amplitude and midpoint statistics of the same chemotaxis cells demand incompatible receptor models.* Companion manuscript (2026), split from the umbrella project [cell-communication-audit](https://github.com/lihuanlz/cell-communication-audit) (archived at Zenodo, doi:10.5281/zenodo.23008824).
