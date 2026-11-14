@@ -4,3 +4,6 @@
 *.toc
 __pycache__/
 pass*.log
+
+.kimi-latex/
+manuscript/build/

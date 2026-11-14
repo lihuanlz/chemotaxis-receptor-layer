@@ -1,129 +1,159 @@
 \documentclass[11pt]{article}
 \usepackage[margin=2.2cm]{geometry}
 \usepackage{booktabs,longtable,array}
-\usepackage{amsmath}
+\usepackage{amsmath,amssymb}
 \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
 \setlength{\parskip}{4pt}
 \setlength{\parindent}{0pt}
 \renewcommand{\arraystretch}{1.15}
+\newcommand{\dex}{\ensuremath{\,\mathrm{dex}}}
 
 \title{\bfseries Supporting Information\\[4pt]
-\large Amplitude and midpoint statistics of the same chemotaxis cells\\
-demand incompatible receptor models}
+\large A midpoint-definition artefact reconciles the standard MWC model\\
+with single-cell chemotaxis dose responses}
 \author{Huan Li\\ \small Shanghai Liangta Biotech Co., Ltd., Shanghai 201899, P.\ R.\ China}
-\date{October 2026}
+\date{November 2026 (corrected protocol, release v2.0.0)}
 
 \begin{document}
 \maketitle
 
-\noindent This Supporting Information documents the complete computational
-output of the accompanying repository
-(\texttt{chemotaxis-receptor-layer}, release v1.0.1): every analysis
-script, the numerical results each produced, and the provenance of the
-third-party FRET archive. Numbers are transcribed verbatim from
-\texttt{results/}; scripts are plain Python~3 (numpy/scipy/matplotlib)
-and read the \texttt{.mat} files in \texttt{data\_external/moore2024\_fret/}
-directly.
+\noindent This Supporting Information accompanies the \emph{corrected} manuscript
+(release v2.0.0). It supersedes the v1.x SI in full. Section~1 states the correction;
+Sections~2--6 document the corrected computational pipeline, all of which reruns from the
+repository root with plain Python~3 (numpy/scipy/matplotlib) against the CC0 FRET archive in
+\texttt{data\_external/moore2024\_fret/}. Numbers below are transcribed from
+\texttt{results/corrected\_v2/} (regenerated 2026-11-14).
 
 \tableofcontents
 \newpage
 
-\section{Pipeline map: scripts and outputs}
+\section{The correction in one page}
 
-\begin{longtable}{p{4.8cm} p{6.8cm} p{4.2cm}}
+Release v1.0.x of this repository claimed that no parameter set of the standard
+MWC-plus-perfect-adaptation class can jointly reproduce the population amplitude table and the
+per-cell midpoint distribution of the Moore et al.\ archive (midpoint error $0.622\dex$ at the
+amplitude-optimal fit). That claim was produced by two definition mismatches in our own
+pipeline, both in \texttt{code54}:
+
+\begin{center}
+\begin{tabular}{p{2.2cm} p{5.6cm} p{5.6cm}}
 \toprule
-Script & Computes & Archived output \\
+ & Observation side & Model side (\texttt{K12\_model}) \\
+\midrule
+E1 axis & total ligand $T=B+F$ (script docstring; CSV column \texttt{K12\_total\_axis\_uM})
+        & returned the foreground increment $F$ \\
+E2 response level & interpolated at the absolute value $da=0.5$
+        & relative half-maximum (as stated in the v1 Methods text) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Consequences: E1 alone contributes $\approx$0.36\dex{} of the $0.622\dex$ (at $B=100\,\mu$M the
+model reports $7.3\,\mu$M against the measured $119.6\,\mu$M, an artificial $1.21\dex$);
+E2 censors $45$--$68\%$ of cells where the relative convention censors $2/268$. With both
+definitions made consistent, a single parameter set reproduces both statistics
+($R^2=0.980$, mean midpoint error $0.023\dex$). The v1 headline claims are retracted:
+the Pareto-front exclusion, the $N\approx2$--$4$ versus $12$--$39$ cooperativity contradiction,
+and the failure of all eight repair hypotheses. Details and the full claim-by-claim table are in
+\texttt{ERRATUM.md} at the repository root.
+
+\section{Corrected pipeline map}
+
+\begin{longtable}{p{5.2cm} p{6.2cm} p{3.6cm}}
+\toprule
+Script & Computes & Output \\
 \midrule
 \endhead
-\texttt{code49\_\allowbreak{}P7\_\allowbreak{}blind\_\allowbreak{}adjudication\_\allowbreak{} FCD\_\allowbreak{}Weber} & P7 blind adjudication of the fold-change/Weber claim on the Moore 2024 archive & adjudication tables \\
-\texttt{code49b\_\allowbreak{}P7\_\allowbreak{}erratum\_\allowbreak{} readjudication} & erratum re-adjudication (censoring-aware) & the code49b unit-table CSV (\texttt{results/P7\_\allowbreak{}Moore2024\_\allowbreak{}FCD-Weber/code49b\_\allowbreak{}unit\_\allowbreak{}table.csv}) \\
-\texttt{code51chemo\_\allowbreak{}receptor\_\allowbreak{}layer\_\allowbreak{} selfcheck} & receptor-layer internal-consistency self-check & console log \\
-\texttt{code52\_\allowbreak{}protocol\_\allowbreak{}artifact\_\allowbreak{}test\_\allowbreak{} raw\_\allowbreak{}FRET\_\allowbreak{}coordinate\_\allowbreak{}analysis} & protocol-artifact test in raw FRET coordinates & console/tables \\
-\texttt{code53\_\allowbreak{}CheA\_\allowbreak{}node\_\allowbreak{}mechanism\_\allowbreak{} kernel\_\allowbreak{}competition} & CheA-node mechanism: kernel competition & console/tables \\
-\texttt{code54\_\allowbreak{}K12\_\allowbreak{}joint\_\allowbreak{}fit\_\allowbreak{}rupture\_\allowbreak{} quantification} & joint-fit rupture quantification on the $K_{1/2}$ ladder & console/tables \\
-\texttt{code55\_\allowbreak{}multispecies\_\allowbreak{}local\_\allowbreak{} adaptation\_\allowbreak{}joint\_\allowbreak{}test} & multi-species / local-adaptation joint test & console/tables \\
-\texttt{code56\_\allowbreak{}FRET\_\allowbreak{}readout\_\allowbreak{}nonlinearity\_\allowbreak{} test} & FRET readout-nonlinearity control & console/tables \\
-\texttt{code57\_\allowbreak{}TCS\_\allowbreak{}depletion\_\allowbreak{}robustness\_\allowbreak{} gain\_\allowbreak{}retuning} & TCS-depletion robustness with gain retuning & console/tables \\
-\texttt{code58\_\allowbreak{}P8\_\allowbreak{}independent\_\allowbreak{}arm\_\allowbreak{} serine\_\allowbreak{}Lasp} & P8 independent arm (serine, L-aspartate) & console/tables \\
-\texttt{code59\_\allowbreak{}residual\_\allowbreak{}waterfall\_\allowbreak{} window\_\allowbreak{}structure\_\allowbreak{}rhoF} & residual waterfall; window structure of $\rho_F$ & console/tables \\
-\texttt{code60\_\allowbreak{}heterogeneous\_\allowbreak{}population\_\allowbreak{} censoring\_\allowbreak{}test} & heterogeneous-population censoring control & console/tables \\
-\texttt{code61\_\allowbreak{}rowwise\_\allowbreak{}Hill\_\allowbreak{}steepness\_\allowbreak{} test} & row-wise Hill-steepness test & console/tables \\
-\texttt{code62\_\allowbreak{}single\_\allowbreak{}cell\_\allowbreak{}same\_\allowbreak{}source\_\allowbreak{} statistics} & same-source single-cell statistics & console/tables \\
-\texttt{code70\_\allowbreak{}mixed\_\allowbreak{}ligand\_\allowbreak{}validation\_\allowbreak{} arm\_\allowbreak{}P1P2} & prospective mixed-ligand validation arms P1/P2 & \texttt{chemotaxis\_\allowbreak{}prospective\_\allowbreak{}arm.csv} \\
-\texttt{chemotaxis\_\allowbreak{}adaptation\_\allowbreak{}audit.py} & adaptation-relay baseline audit on the full archive & \texttt{chemotaxis\_\allowbreak{}adaptation\_\allowbreak{}audit.json} \\
+\texttt{code/recheck\_chemotaxis.py} & the $2\times2$ protocol crossing (axis $\times$ response
+level), closed-form vs \texttt{brentq} check ($1.1\times10^{-12}$), Pareto fronts A--D &
+\texttt{recheck\_results.json} \\
+\texttt{code/sensitivity\_chemotaxis.py} & threshold-fraction and weak-response-floor sensitivity
+(13 configurations) & \texttt{sens.json} \\
+\texttt{code/fine\_sweep.py} & fine $\lambda$ grid, shows the $\lambda\approx3.5$ acceptance-region
+crossing that the v1 seven-point sweep skipped & console tables \\
+\texttt{code/deep\_N\_diversity.py} & cooperativity profile likelihood; per-background midpoint
+dispersion; sensitivity--responsiveness covariance & \texttt{deep.json} \\
+\texttt{code/deep\_confound.py} & saturation and noise-direction confound checks for the
+dispersion--gain correlation & console tables \\
+\texttt{code/fig\_v2.py}, \texttt{code/fig2\_v3.py} & manuscript figures 1 and 2 &
+\texttt{fig1\_v2\_data.json}, PNGs \\
 \bottomrule
 \end{longtable}
 
-\section{P7 adjudication: $K_{1/2}$ medians vs the Weber line}
+All seven scripts resolve the repository root from their own location
+(\texttt{\_\_file\_\_}) and run unmodified on any machine with the archive present.
 
-Censoring-aware re-adjudication (code49b) of the FCD--Weber claim on the
-Moore et al.\ (2024) single-cell FRET archive. Table~\ref{tab:p7} is the
-archived unit table (verbatim rows).
+\section{The four protocols and their Pareto fronts}
 
-\begin{table}[h]
-\centering\small
-\caption{$K_{1/2}$ medians per background level vs Weber-line prediction.}
-\label{tab:p7}
-\begin{tabular}{cccccc}
+Amplitude $R^2$ and mean midpoint error (dex) at the amplitude-optimal weighting ($\lambda=0$)
+and at the midpoint-optimal end of the sweep ($\lambda=30$):
+
+\begin{center}
+\begin{tabular}{l l l l l}
 \toprule
-Background ($\mu$M) & $K_{1/2}$ median ($\mu$M) & IQR lo--hi & censored / $n$ & Weber pred.\ ($\mu$M) & dev.\ (dex) \\
+Protocol & $R^2$ ($\lambda{=}0$) & err ($\lambda{=}0$) & $R^2$ ($\lambda{=}30$) & err ($\lambda{=}30$)\\
 \midrule
-0.0  & 2.033 & 1.583--3.105 & 179/268 & 2.282 & $-0.050$ \\
-0.01 & 2.896 & 2.080--3.065 & 69/101  & 2.293 & $+0.101$ \\
-0.1  & 2.168 & 1.769--2.844 & 35/57   & 2.399 & $-0.044$ \\
+A: v1 protocol (absolute, $F$ axis) & 0.980 & 0.622 & 0.511 & 0.074 \\
+B: axis fixed only              & 0.980 & 0.257 & 0.847 & 0.032 \\
+C: response level fixed only    & 0.980 & 0.374 & 0.341 & 0.070 \\
+D: both fixed (relative, $B{+}F$) & \textbf{0.980} & \textbf{0.023} & 0.978 & 0.016 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{center}
 
-The per-cell unit table
-(\texttt{results/P7\_Moore2024\_FCD-Weber/code49b\_unit\_table.csv}) carries,
-per (background $B$, foreground $F$) condition: fold change $r$, threshold
-$T$, $\log_{10} r$, $\log_{10} T$, $n$ cells, and the two arm statistics
-$R_a$, $R_A$; e.g.\ $B{=}0.01$, $F{=}0.2\,\mu$M: $r=21.0$, $T=0.21$,
-$n=101$, $R_a=0.0655$, $R_A=0.0209$.
+Under protocol D every swept weighting $\lambda\in[0,30]$ lies inside the v1 acceptance region
+($R^2>0.9$, err $<0.1\dex$). There is no trade-off left to explain.
 
-\section{Adaptation-relay baseline audit}
+\section{Weber lines under both conventions}
 
-Full-archive audit (\texttt{chemotaxis\_adaptation\_audit.json}):
-2217 cells, 77{,}595 response events; median baseline activity after
-high- vs low-amplitude preceding stimuli $0.434$ vs $0.448$; median
-absolute response $0.608$. The per-(preceding-dose) baseline bands are
-archived in the same JSON.
+Per-cell midpoints on the total-ligand axis, fit $K_{1/2}=a+bB$:
 
-\section{Prospective mixed-ligand arms (code70)}
-
-Frozen-then-measured prospective arm V1 (clause P-1b, amplitude table of
-the L-aspartate component). Verbatim rows of
-\texttt{chemotaxis\_prospective\_arm.csv}:
-
-\begin{table}[h]
-\centering\small
-\caption{Prospective arm V1: measured vs predicted amplitudes
-(tolerance: max $|$dev$|$ $= 0.08$).}
-\label{tab:p70}
-\begin{tabular}{ccccc}
+\begin{center}
+\begin{tabular}{l l l l}
 \toprule
-Foreground ($\mu$M) & measured & predicted & deviation & hit \\
+Convention & Line & Max deviation & Censoring \\
 \midrule
-5  & 0.047 & 0.119 & $-0.072$ & Y \\
-10 & 0.085 & 0.152 & $-0.067$ & Y \\
-20 & 0.139 & 0.187 & $-0.048$ & Y \\
+Absolute threshold $da=0.5$ & $K_{1/2}=2.29+1.17\,B$ & $0.10\dex$ & 45--68\% \\
+Relative half-maximum & $K_{1/2}=0.91+1.06\,B$ & $0.05\dex$ & $<1\%$ \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{center}
 
-\section{Third-party data provenance}
+The relative-threshold line is straighter and closer to unit slope, uses $2.7\times$ more cells,
+and coincides with the quantity the model actually predicts.
 
-\texttt{data\_external/moore2024\_fret/} mirrors, verbatim, the 48-file
-single-cell FRET archive of Moore, Kamino, Kottou, Shimizu \& Emonet,
-\textit{Cell Syst.} 15, 628--638 (2024), Dryad
-doi:10.5061/dryad.nvx0k6dzz, under its CC0~1.0 public-domain dedication;
-please cite the original study. Receptor-layer parameter priors derive
-from Sourjik \& Berg, \textit{Proc.\ Natl Acad.\ Sci.\ USA} 99,
-123--127 (2002); Shimizu, Tu \& Berg, \textit{Mol.\ Syst.\ Biol.} 6,
-382 (2010); and Tu, Shimizu \& Berg, \textit{Proc.\ Natl Acad.\ Sci.\
-USA} 105, 14855--14860 (2008); fold-change readout evidence from Lazova
-et al., \textit{Proc.\ Natl Acad.\ Sci.\ USA} 108, 13870--13875 (2011).
-Full notes in \texttt{data\_external/PROVENANCE.md}.
+\section{Cooperativity is not identified}
+
+Profile likelihood over fixed $N$ (refitting $K_I$, $K_A$, $a_{\max}$): $R^2$ flattens after
+$N\approx15$ ($0.977\to0.980$) while $K_A$ runs to its bound for $N\le15$; the data constrain
+$N\gtrsim8$ and leave a strong $N$--$K_A$ ridge. $N=39$ is one point on that ridge, not an
+estimate. The full table is in \texttt{results/corrected\_v2/deep.json}.
+
+\section{Residual heterogeneity}
+
+Per-cell midpoint dispersion (relative convention, saturated cells only): sd $0.260\dex$ at
+$B=0$ falling to $0.022\dex$ at $B=100\,\mu$M; background-centred $\log K_{1/2}$ co-varies with
+responsiveness (Spearman $\rho=+0.205$, $p=6.6\times10^{-7}$, $n=579$). Saturation and
+noise-direction artefacts are excluded by the checks in \texttt{deep\_confound.py}; what cannot be
+excluded without repeated measurements is a noise contribution to the shallow low-background
+dose-responses, so the effect is reported as small.
+
+\section{What survives from v1 unchanged}
+
+The adaptation-relay measurement is independent of the rupture analysis and stands: across 2,217
+cells and 77,595 pulse events, the pre-pulse baseline is restored within $2.2\%$ of the median
+response amplitude after the 5\,s washout, history-independent over a 90-fold dose range
+(\texttt{code/chemotaxis\_adaptation\_audit.py}). The prospective mixed-ligand arm is retained in
+the manuscript but is no longer used for model-class discrimination: its frozen tolerance band was
+defined for the absolute-threshold statistic, and its third reading came from a control arm marked
+``not scored'' in the source CSV. Both qualifications are stated in the main text.
+
+\section{Legacy v1 pipeline}
+
+The v1 scripts (\texttt{code49}--\texttt{code70} series) remain in \texttt{code/} for the
+historical record; the v1 manuscript and SI are preserved in
+\texttt{manuscript/\_archive\_refuted\_v1/}. They document the analysis \emph{as refuted}. Eight of
+the legacy scripts carry hard-coded absolute paths from the original run environment and are not
+expected to execute unmodified; the corrected pipeline of Section~2 is the supported entry point.
 
 \end{document}
